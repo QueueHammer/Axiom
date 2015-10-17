@@ -1,57 +1,42 @@
-window.loader = (function () {
-  function functor() {
+window.Axiom = (function () {
+  function Axiom() {
     var funk = function () {};
-    var bound = funk;
     var params = [];
-    var replacements = {};
-
-    function injector() {
-
-    }
+    var mocks = {};
 
     function closure() {
       var args = arguments;
-      return funk.apply(this, params.map(function (k, i) { return replacements[k] ? replacements[k]: args[i]; }));
+      return funk.apply(this, params.map(function (k, i) { return mocks[k] ? mocks[k]: args[i]; }));
     }
 
-    Object.defineProperties(this, {
-      function: {
-        get: function () {
-          return closure;
-        },
-        set: function (val) {
-          funk = val;
-        }
+    var outObj = {
+      get func () { return closure; },
+      set func (val) { funk = val; },
+      get params () { return params.slice(); },
+      set params (val) { params = val; },
+      get inject () {
+        return params.reduce(function (m, d, i) {
+          Object.defineProperty(m, d, {
+            set: function (val) {
+              mocks[d] = val;
+            }
+          });
+          return m;
+        }, {});
       },
-      parameters: {
-        get: function () {
-          return params.slice();
-        },
-        set: function (val) {
-          params = val;
-        }
-      },
-      inject: {
-        get: function () {
-          return params.reduce(function (m, d, i) {
-            Object.defineProperty(m, d, {
-              set: function (val) {
-                replacements[d] = val;
-              }
-            });
-            return m;
-          }, {});
-        }
-      },
-      ng: {
-        get: function () {
-          var list = params.slice();
-          list.push(closure);
-          return list;
-        }
+      get ng () {
+        var list = params.slice();
+        list.push(closure);
+        return list;
       }
-    });
+    };
+
+    return outObj;
   }
 
-  return functor;
+  Axiom.new = function () {
+    return new Axiom();
+  };
+
+  return Axiom;
 })();

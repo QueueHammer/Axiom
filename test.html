@@ -9,27 +9,32 @@
   <script>
     (function () {
       console.clear();
-      var f = new loader();
-      f.parameters = ['a', 'b'];
-      f.function = function (a, b) { console.log(a ,b); };
+      var f = new Axiom();
+      function test(a) {
+        a.params = ['a', 'b'];
+        a.func = function (a, b) { return [a, b]; };
 
-      console.log(f.parameters);
-      console.log(f.function(1, 2));
-      console.log(f.ng);
-      console.log(f.ng[f.ng.length -1](1, 2));
-      console.log(f.inject);
+        console.log(a.params);
+        console.log(a.func(1, 2));
+        console.log(a.ng);
+        console.log(a.ng[a.ng.length -1](1, 2));
+        console.log(a.inject);
 
-      f.inject.a = 'a';
-      console.log(f.function(1, 2));
+        a.inject.a = 'a';
+        console.log(a.func(1, 2));
 
-      f.inject.b = 'b';
-      console.log(f.function(1, 2));
+        a.inject.b = 'b';
+        console.log(a.func(1, 2));
 
-      f.inject.a = undefined;
-      console.log(f.function(1, 2));
+        a.inject.a = undefined;
+        console.log(a.func(1, 2));
 
-      f.inject.b = undefined;
-      console.log(f.function(1, 2));
+        a.inject.b = undefined;
+        console.log(a.func(1, 2));
+      }
+
+      test(new Axiom());
+      test(Axiom.new());
     })();
   </script>
 </body>
