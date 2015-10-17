@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="./loader.js"></script>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+</head>
+<body>
+  <script>
+    (function () {
+      console.clear();
+      var f = new loader();
+      f.parameters = ['a', 'b'];
+      f.function = function (a, b) { console.log(a ,b); };
+
+      console.log(f.parameters);
+      console.log(f.function(1, 2));
+      console.log(f.ng);
+      console.log(f.ng[f.ng.length -1](1, 2));
+      console.log(f.inject);
+
+      f.inject.a = 'a';
+      console.log(f.function(1, 2));
+
+      f.inject.b = 'b';
+      console.log(f.function(1, 2));
+
+      f.inject.a = undefined;
+      console.log(f.function(1, 2));
+
+      f.inject.b = undefined;
+      console.log(f.function(1, 2));
+    })();
+  </script>
+</body>
+</html>
