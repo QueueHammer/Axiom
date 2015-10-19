@@ -1,14 +1,14 @@
 #Axiom
-###A reflection engine, loader, with Agnular-billities.
+###A library for creating functions with extra powers.
 
 ##Why
-JavaScript has built in reflection... that breaks when the code is compressed by 'Minification'. To fix this it is common to pass along string names for each parameter to help code that needs that information. $projectName$ aims to help with this in the three cases that it is convienant.
+JavaScript has built in reflection... that breaks when the code is compressed by minification. To fix this it is common to pass along string names for each parameter to help code that needs that information. Axiom aims to help with this in the three cases that it is convenient.
 
 ##Angular Functions
-Angular uses string definitions for its parameters so that it can 'inject' the values it needs when it runs. It may not seem the natural first aproach to do this with a list that leads with the parameters and then ends with the function. There are other ways to define this information but it can obscure what is being injected for each parameter after the code has been updated, e.g. `(f(){}).$inject`. The function definition is also incompatable with other patterns so that function it's not drop in ready for other frameworks.
+Angular uses string definitions for its parameters so that it can 'inject' the values it needs when it runs. It may not seem the natural first approach to do this with a list that leads with the parameters and then ends with the function. There are other ways to define this information but it can obscure what is being injected for each parameter after the code has been updated, e.g. `(f(){}).$inject`. The function definition is also incompatible with other patterns so that function it's not drop in ready for other frameworks.
 
 ###AMD Definitions
-Front end AMD uses a pattern where a list of property names is passed before the function to define so that it's dependcies will be understood after minification. The idea is fairly strait forward, though not compatable with libries like Angular directly.
+Front end AMD uses a pattern where a list of property names is passed before the function to define so that it's dependencies will be understood after minification. The idea is fairly strait forward, though not compatible with libraries like Angular directly.
 
 ###Testing and mocking
 Another powerful feature of reflection is mocking an input to a function. This way the function can be tested entirely or partially mocked even if it is minified.
@@ -17,7 +17,7 @@ Another powerful feature of reflection is mocking an input to a function. This w
 We start by defining the function and it's named parameters.
 
 ```
-var mod = $lib.new();
+var mod = Axiom.new();
 
 //Assign the values
 mod.params = ['message','logModule'];
