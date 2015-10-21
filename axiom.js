@@ -1,40 +1,47 @@
 window.Axiom = (function () {
   function Axiom() {
-    var funk = function () {};
+    var func = function () {};
     var params = [];
     var mocks = {};
 
     function closure() {
       var args = arguments;
-      return funk.apply(this, params.map(function (k, i) {
+      return func.apply(this, params.map(function (k, i) {
         return mocks[k] ? mocks[k]: args[i];
       }));
     }
 
-    var outObj = {
-      get func () { return closure; },
-      set func (val) { funk = val; },
-      get params () { return params.slice(); },
-      set params (val) { params = val; },
-      get inject () {
-        return params.reduce(function (m, d, i) {
-          Object.defineProperty(m, d, {
-            set: function (val) {
-              mocks[d] = val;
-            }
-          });
-          return m;
-        }, {});
+    Object.defineProperties(closure, {
+      func: {
+        get: function () { return closure; },
+        set: function (val) { func = val; },
       },
-      get ng () {
-        var list = params.slice();
-        list.push(closure);
-        return list;
+      params: {
+        get: function () { return params.slice(); },
+        set: function (val) { params = val; },
       },
-      //get await() {}
-    };
+      inject: {
+        get: function () {
+          return params.reduce(function (m, d, i) {
+            Object.defineProperty(m, d, {
+              set: function (val) {
+                mocks[d] = val;
+              }
+            });
+            return m;
+          }, {});
+        }
+      },
+      ng: {
+        get: function () {
+          var list = params.slice();
+          list.push(closure);
+          return list;
+        }
+      }
+    });
 
-    return outObj;
+    return closure;
   }
 
   Axiom.new = function () {

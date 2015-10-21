@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="./loader.js"></script>
+  <script src="./axiom.js"></script>
   <meta charset="utf-8">
   <title>JS Bin</title>
 </head>
@@ -11,13 +11,27 @@
       console.clear();
       var f = new Axiom();
       function test(a) {
-        a.params = ['a', 'b'];
-        a.func = function (a, b) { return [a, b]; };
+        var testParams = ['a', 'b'];
+        var testFunc = function (a, b) { return [a, b]; };
 
-        console.log(a.params);
-        console.log(a.func(1, 2));
-        console.log(a.ng);
-        console.log(a.ng[a.ng.length -1](1, 2));
+        //Bind the axiom with values
+        a.params = testParams;
+        a.func = testFunc;
+
+        //Assert if params do not match
+        testParams.forEach(function (p, i) {
+          console.assert(a.params[i] === p, 'Params do not match', p, i, a.params[i]);
+        });
+
+        //Assert if the function does not return the same as the on from axiom
+        var inputValues = [1, 2];
+        var testResult = testFunc.apply(this, inputValues);
+        var axiomResult = a.func.apply(this, inputValues);
+
+        testResult.forEach(function (r, i) {
+          console.assert(axiomResult[i] === r, 'Result did not match', r, i, axiomResult[i]);
+        });
+
         console.log(a.inject);
 
         a.inject.a = 'a';
